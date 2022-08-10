@@ -1,0 +1,23 @@
+<form ngClass="container p-5" [formGroup]="form" (submit)="login()">
+  <div ngClass="form-group">
+    <label for="formGroupExampleInput">User name:</label>
+    <input
+      type="text"
+      ngClass="form-control"
+      id="formGroupExampleInput"
+      placeholder="Enter your user name..."
+      formControlName="username"
+    />
+  </div>
+  <div ngClass="form-group">
+    <label for="formGroupExampleInput2">Password:</label>
+    <input
+      type="password"
+      ngClass="form-control"
+      id="formGroupExampleInput2"
+      placeholder="Enter your password..."
+      formControlName="password"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Primary</button>
+</form>
