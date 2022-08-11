@@ -46,7 +46,11 @@
           <button type="button" ngClass="btn btn-info mr-2">
             <i ngClass="fa-solid fa-pencil"></i>
           </button>
-          <button type="button" ngClass="btn btn-danger" (click)="deleteItemSelected(product.id)">
+          <button
+            type="button"
+            ngClass="btn btn-danger"
+            (click)="deleteItemSelected(product.id)"
+          >
             <i ngClass="fa-solid fa-trash-can"></i>
           </button>
         </td>
@@ -104,8 +108,48 @@
       <label class="form-check-label" for="exampleCheck1">Kích hoạt</label>
     </div>
     <div ngClass="__content--left">
-      <button type="button" class="btn btn-primary" (click)="submitAdd()">Đồng ý</button>
-      <button type="button" class="btn btn-danger ml-3" (click)="closeAddDialog()">Thoát</button>
+      <button type="button" class="btn btn-primary" (click)="submitAdd()">
+        Đồng ý
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger ml-3"
+        (click)="closeAddDialog()"
+      >
+        Thoát
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<!-- DELETE DIALOG -->
+<p-dialog
+  header="Thêm mới loại văn bản"
+  [(visible)]="displayDelete"
+  [style]="{ width: '50vw', height: '50vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <ng-template pTemplate="header">
+    <h2>Thêm mới loại văn bản</h2>
+  </ng-template>
+  <form >
+    <div>
+      <p>
+        <span><i class="fa-solid fa-circle-question text-info"></i></span>
+        Bạn có muốn xóa bản ghi?
+      </p>
+    </div>
+    <div ngClass="__content--left">
+      <button type="button" class="btn btn-primary" (click)="submitDelete()">
+        Đồng ý
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger ml-3"
+        (click)="closeDeleteDialog()"
+      >
+        Thoát
+      </button>
     </div>
   </form>
 </p-dialog>

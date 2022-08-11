@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
 
   //control dialog
   displayAdd: boolean = false;
+  displayDelete: boolean = false;
 
   //convert user data to object
   userData() {
@@ -110,8 +111,46 @@ export class HomeComponent implements OnInit {
   }
 
   //delete product
+
+  deleteIdSelected: number = 0;
+
   deleteItemSelected(productId: number) {
-    
+    this.deleteIdSelected = productId;
+    this.showDeleteDialog();
+  }
+
+  //delete product
+  submitDelete() {
+    const userData = this.userData();
+    const dataSubmit: any = {
+      id: this.deleteIdSelected,
+      userId: '' + userData.userId,
+    };
+    if (this.deleteIdSelected != 0) {
+      this.deleteProduct(dataSubmit);
+    } else {
+      throw new Error('This product invalid!');
+    }
+  }
+  //call api delete product
+  deleteProduct(data: any) {
+    const reqH = new HttpHeaders({
+      authorization: 'bearer ' + this.userObj.access_token,
+    });
+    this.http
+      .post(
+        'https://api-dev-voffice.v-soft.vn/api/DocumentType/v2_Delete',
+
+        data,
+        { headers: reqH }
+      )
+      .subscribe((response: any) => {
+        console.log('delete success');
+        setTimeout(() => {
+          this.closeDeleteDialog();
+        }, 1000);
+        this.getData(this.search);
+      });
   }
 
   //control dialog
@@ -121,6 +160,14 @@ export class HomeComponent implements OnInit {
   }
   closeAddDialog() {
     this.displayAdd = false;
+  }
+
+  //delete dialog
+  showDeleteDialog() {
+    this.displayDelete = true;
+  }
+  closeDeleteDialog() {
+    this.displayDelete = false;
   }
 
   ngOnInit(): void {
