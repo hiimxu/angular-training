@@ -1,0 +1,15 @@
+.nav__pc{
+    width: 100%;
+    height: auto;
+}
+.nav__list{
+    display: flex;
+}
+.nav__item{
+    list-style-type: none;
+    color: white;
+    
+}
+.nav__bar--btn{
+    display: block;
+}

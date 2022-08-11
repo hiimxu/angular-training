@@ -1,22 +1,49 @@
-<nav ngClass="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a ngClass="navbar-brand" href="#">Navbar</a>
-    <button ngClass="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span ngClass="navbar-toggler-icon"></span>
-    </button>
-    <div ngClass="collapse navbar-collapse" id="navbarNav">
-      <ul ngClass="navbar-nav">
-        <li ngClass="nav-item active">
-          <a ngClass="nav-link" href="#">Home <span ngClass="sr-only">(current)</span></a>
-        </li>
-        <li ngClass="nav-item">
-          <a ngClass="nav-link" href="#">Features</a>
-        </li>
-        <li ngClass="nav-item">
-          <a ngClass="nav-link" href="#">Pricing</a>
-        </li>
-        <li ngClass="nav-item">
-          <a ngClass="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarTogglerDemo01"
+    aria-controls="navbarTogglerDemo01"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a
+          class="nav-link"
+          routerLink=""
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          >Home <span class="sr-only">(current)</span></a
+        >
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button
+        class="btn bg-light my-2 my-sm-0 mr-3"
+        routerLink=""
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        *ngIf="userInfo"
+        (click)="logout()"
+      >
+        Sign out
+      </button>
+      <div *ngIf="!userInfo">
+        <button
+          class="btn bg-light my-2 my-sm-0 mr-3"
+          routerLink="/login"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Sign in
+        </button>
+        <button class="btn bg-dark text-white my-2 my-sm-0">Sign up</button>
+      </div>
+    </form>
+  </div>
+</nav>

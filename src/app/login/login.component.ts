@@ -1,6 +1,8 @@
+import { JsonPipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +11,18 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;
+  userObj: any;
+  userStr: any;
   header = new HttpHeaders({
     'Content-Type': 'application/x-www-form-urlencoded',
   });
   submitForm: any = {};
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -35,8 +43,18 @@ export class LoginComponent implements OnInit {
       .post('https://api-dev-voffice.v-soft.vn/token', this.submitForm, {
         headers: reqH,
       })
-      .subscribe(() => {
+      .subscribe((userInfor) => {
+        localStorage.setItem('userInfor', JSON.stringify(userInfor));
+
+        this.userStr = localStorage.getItem('userInfor');
+        this.userObj = JSON.parse(this.userStr);
+        console.log(typeof this.userObj);
+
         console.log('login success');
+
+        this.router.navigate(['']).then(() => {
+          window.location.reload();
+        });
       });
   }
 }

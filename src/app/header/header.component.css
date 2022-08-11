@@ -5,7 +5,3 @@
     border-radius: 10px;
     padding: 0.5rem 2rem;
 }
-.__content--left{
-    display: flex;
-    justify-content: flex-end;
-}
