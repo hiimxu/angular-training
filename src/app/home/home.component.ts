@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   paginate(event: any) {
     const pageIndex = event.first / event.rows + 1;
-    const pageSize = event.rows;    
+    const pageSize = event.rows;
     this.search = {
       ...this.search,
       pageNumber: pageIndex,
@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit {
     };
     console.log(this.search);
     this.getData(this.search);
-    
   }
   searchData() {
     this.searchKeyword = this.formBuilder.group({
@@ -64,7 +63,6 @@ export class HomeComponent implements OnInit {
     };
     console.log(this.search);
     this.getData(this.search);
-    
   }
 
   //control dialog
@@ -143,16 +141,26 @@ export class HomeComponent implements OnInit {
         { headers: reqH }
       )
       .subscribe((response: any) => {
-        console.log('add success');
-        this.showMessage({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: 'Thêm thành công',
-        });
-        setTimeout(() => {
-          this.closeAddDialog();
-        }, 1500);
-        this.getData(this.search);
+        if (response.value) {
+          console.log('add success');
+          this.showMessage({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Thêm thành công',
+          });
+          setTimeout(() => {
+            this.closeAddDialog();
+          }, 1000);
+          this.formAdd.reset();
+          this.getData(this.search);
+        } else {
+          console.log('add failed');
+          this.showMessage({
+            severity: 'error',
+            summary: 'Có lỗi xảy ra',
+            detail: response?.message,
+          });
+        }
       });
   }
 
@@ -251,16 +259,25 @@ export class HomeComponent implements OnInit {
         { headers: reqH }
       )
       .subscribe((response: any) => {
-        console.log('edit success');
-        this.showMessage({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: 'Chỉnh sửa thành công',
-        });
-        setTimeout(() => {
-          this.closeEditDialog();
-        }, 1000);
-        this.getData(this.search);
+        if (response?.value) {
+          console.log('edit success');
+          this.showMessage({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Chỉnh sửa thành công',
+          });
+          setTimeout(() => {
+            this.closeEditDialog();
+          }, 1000);
+          this.getData(this.search);
+        } else {
+          console.log('edit failed');
+          this.showMessage({
+            severity: 'error',
+            summary: 'Có lỗi xảy ra',
+            detail: response?.message,
+          });
+        }
       });
   }
 
@@ -294,6 +311,7 @@ export class HomeComponent implements OnInit {
   }
   closeAddDialog() {
     this.displayAdd = false;
+    this.formAdd.reset();
   }
 
   //delete dialog
@@ -310,6 +328,7 @@ export class HomeComponent implements OnInit {
   }
   closeEditDialog() {
     this.displayEdit = false;
+    this.formEdit.reset();
   }
   //mobile search dialog
   showSearchDialog() {
