@@ -1,16 +1,7 @@
 <div ngClass="__control__bar border">
   <div ngClass="__control__item-add">
-    <button
-      ngClass="__control__bar-pc btn btn-primary"
-      (click)="showAddDialog()"
-    >
+    <button ngClass="__add--btn btn btn-primary" (click)="showAddDialog()">
       Thêm mới
-    </button>
-    <button
-      ngClass="__control__bar-mobile __control__bar-mobile-btn btn btn-primary"
-      (click)="showAddDialog()"
-    >
-      <i class="fa-solid fa-plus"></i>
     </button>
   </div>
   <div ngClass="__control__item--search __control__bar-pc">
@@ -44,7 +35,7 @@
   </div>
 </div>
 
-<div ngClass="center p-5">
+<div ngClass="center __table__res">
   <p-table
     [value]="products"
     [paginator]="true"
@@ -59,7 +50,7 @@
         <th style="min-width: 200px">Mã</th>
         <th style="min-width: 200px">Loại văn bản</th>
         <th style="min-width: 100px">Trạng thái</th>
-        <th style="min-width: 100px"></th>
+        <th style="min-width: 50px"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
@@ -74,20 +65,20 @@
           ></i>
           <i *ngIf="!product.active" ngClass="fa-solid fa-toggle-off"></i>
         </td>
-        <td style="min-width: 100px">
+        <td style="min-width: 50px">
           <button
             type="button"
-            ngClass="btn btn-info mr-2"
+            ngClass="btn bg-transparent mr-2"
             (click)="selectEditItem(product)"
           >
-            <i ngClass="fa-solid fa-pencil"></i>
+            <i class="fa-solid fa-pen text-info"></i>
           </button>
           <button
             type="button"
-            ngClass="btn btn-danger"
+            ngClass="btn bg-transparent"
             (click)="deleteItemSelected(product.id)"
           >
-            <i ngClass="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can text-danger"></i>
           </button>
         </td>
       </tr>
@@ -207,7 +198,7 @@
   [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
 >
   <ng-template pTemplate="header">
-    <h2>Thêm mới loại văn bản</h2>
+    <h2>Chỉnh sửa loại văn bản</h2>
   </ng-template>
   <form [formGroup]="formEdit" *ngIf="editItemSelected">
     <div ngClass="form-group">
@@ -277,7 +268,7 @@
         formControlName="keyword"
       />
       <button
-        ngClass="btn btn-outline-success my-2 my-sm-0 ml-1"
+        ngClass="btn btn-outline-success my-2 my-sm-0 ml-3"
         type="submit"
         (click)="handleSearch()"
       >
@@ -288,7 +279,7 @@
   <div ngClass="__content--left">
     <button
       type="button"
-      ngClass="btn btn-danger ml-3"
+      ngClass="btn btn-danger ml-3 mt-3"
       (click)="closeSearchDialog()"
     >
       Thoát
@@ -297,4 +288,8 @@
 </p-dialog>
 
 <!-- DIALOG MESSAGE ACTION -->
-<p-toast position="top-right" key="tl" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
+<p-toast
+  position="top-right"
+  key="tl"
+  [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"
+></p-toast>

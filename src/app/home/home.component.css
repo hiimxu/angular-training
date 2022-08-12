@@ -33,6 +33,10 @@
     
 }
 
+.__table__res{
+    padding: 3rem;
+}
+
 
 @media only screen and (max-width:576px){
     
@@ -45,6 +49,12 @@
     }
     .__control__bar-mobile-btn{
         margin-top: 8px;
+    }
+    .__add--btn{
+        margin-top: 8px;
+    }
+    .__table__res{
+        padding: 0.5rem;
     }
 }
 
