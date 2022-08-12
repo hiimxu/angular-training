@@ -44,14 +44,14 @@
   </div>
 </div>
 
-<div ngClass="contaier center p-5">
+<div ngClass="center p-5">
   <p-table
     [value]="products"
     [paginator]="true"
     [rows]="10"
-    [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 50, 100]"
     [scrollable]="true"
+    (onPage)="paginate($event)"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -265,7 +265,10 @@
     <h2>Tìm kiếm</h2>
   </ng-template>
   <div>
-    <form ngClass="__search__dialog--mobile form-inline end-0" [formGroup]="searchKeyword">
+    <form
+      ngClass="__search__dialog--mobile form-inline end-0"
+      [formGroup]="searchKeyword"
+    >
       <input
         ngClass="__search__input--mobile  mr-sm-2"
         type="search"
@@ -294,4 +297,4 @@
 </p-dialog>
 
 <!-- DIALOG MESSAGE ACTION -->
-<p-toast position="top-right" key="tl"></p-toast>
+<p-toast position="top-right" key="tl" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>

@@ -29,12 +29,26 @@ export class HomeComponent implements OnInit {
   //Request for get method
   searchKeyword!: FormGroup;
 
+  //pagination
+
   search: any = {
     keyword: '',
     pageSize: '10',
     pageNumber: '1',
   };
 
+  paginate(event: any) {
+    const pageIndex = event.first / event.rows + 1;
+    const pageSize = event.rows;    
+    this.search = {
+      ...this.search,
+      pageNumber: pageIndex,
+      pageSize: pageSize,
+    };
+    console.log(this.search);
+    this.getData(this.search);
+    
+  }
   searchData() {
     this.searchKeyword = this.formBuilder.group({
       keyword: '',
@@ -50,6 +64,7 @@ export class HomeComponent implements OnInit {
     };
     console.log(this.search);
     this.getData(this.search);
+    
   }
 
   //control dialog
@@ -84,7 +99,7 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((response: any) => {
         this.products = [...response.data];
-        this.closeSearchDialog()
+        this.closeSearchDialog();
         console.log(this.products);
       });
   }
