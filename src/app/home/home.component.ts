@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
   displayAdd: boolean = false;
   displayDelete: boolean = false;
   displayEdit: boolean = false;
+  displaySearch: boolean = false;
 
   //convert user data to object
   userData() {
@@ -83,6 +84,7 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((response: any) => {
         this.products = [...response.data];
+        this.closeSearchDialog()
         console.log(this.products);
       });
   }
@@ -293,6 +295,13 @@ export class HomeComponent implements OnInit {
   }
   closeEditDialog() {
     this.displayEdit = false;
+  }
+  //mobile search dialog
+  showSearchDialog() {
+    this.displaySearch = true;
+  }
+  closeSearchDialog() {
+    this.displaySearch = false;
   }
 
   //message dialog

@@ -5,12 +5,32 @@
     border-radius: 10px;
     padding: 0.5rem 2rem;
 }
+.__content--left{
+    display: flex;
+    justify-content: flex-end;
+}
 
 .__control__bar-pc{
     display: block;
 }
 .__control__bar-mobile{
     display: none;
+}
+
+.__search__dialog--mobile{
+    display: flex;
+    align-items: flex-start;
+    flex-flow: wrap;
+    justify-content: flex-start;
+    
+}
+.__search__input--mobile{    
+    border: 1px solid #ced4da;
+    margin: 8px 0px;
+    height: 38px;
+    border-radius: 0.25rem;
+    flex: 1;
+    
 }
 
 

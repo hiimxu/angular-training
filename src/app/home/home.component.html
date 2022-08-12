@@ -24,7 +24,7 @@
           formControlName="keyword"
         />
         <button
-          ngClass="  btn btn-outline-success my-2 my-sm-0"
+          ngClass="btn btn-outline-success my-2 my-sm-0"
           type="submit"
           (click)="handleSearch()"
         >
@@ -37,7 +37,7 @@
     <button
       ngClass="  btn btn-outline-success my-2 my-sm-0"
       type="submit"
-      (click)="handleSearch()"
+      (click)="showSearchDialog()"
     >
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
@@ -49,8 +49,8 @@
     [value]="products"
     [paginator]="true"
     [rows]="10"
-    [showCurrentPageReport]="true"    
-    [rowsPerPageOptions]="[5, 50, 100]"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 50, 100]"
     [scrollable]="true"
   >
     <ng-template pTemplate="header">
@@ -58,7 +58,7 @@
         <th style="min-width: 200px">STT</th>
         <th style="min-width: 200px">Mã</th>
         <th style="min-width: 200px">Loại văn bản</th>
-        <th style="min-width: 200px">Trạng thái</th>
+        <th style="min-width: 100px">Trạng thái</th>
         <th style="min-width: 100px"></th>
       </tr>
     </ng-template>
@@ -74,7 +74,7 @@
           ></i>
           <i *ngIf="!product.active" ngClass="fa-solid fa-toggle-off"></i>
         </td>
-        <td>
+        <td style="min-width: 100px">
           <button
             type="button"
             ngClass="btn btn-info mr-2"
@@ -163,13 +163,16 @@
 
 <!-- DELETE DIALOG -->
 <p-dialog
-  header="Thêm mới loại văn bản"
+  header=""
   [(visible)]="displayDelete"
-  [style]="{ width: '50vw', height: '50vw' }"
-  [style]="{ width: '50vw' }"
+  [style]="{ width: '50vw', minHeight: '10rem' }"
+  [baseZIndex]="10000"
+  [modal]="true"
+  [draggable]="false"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
 >
   <ng-template pTemplate="header">
-    <h2>Thêm mới loại văn bản</h2>
+    <h2>Xóa văn bản</h2>
   </ng-template>
   <form>
     <div>
@@ -197,12 +200,15 @@
 <p-dialog
   header="Chỉnh sửa loại văn bản"
   [(visible)]="displayEdit"
-  [style]="{ width: '50vw', height: '50vw' }"
-  [style]="{ width: '50vw' }"
+  [style]="{ width: '50vw', minHeight: '10rem' }"
+  [baseZIndex]="10000"
+  [modal]="true"
+  [draggable]="false"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
 >
-  <!-- <ng-template pTemplate="header">
+  <ng-template pTemplate="header">
     <h2>Thêm mới loại văn bản</h2>
-  </ng-template> -->
+  </ng-template>
   <form [formGroup]="formEdit" *ngIf="editItemSelected">
     <div ngClass="form-group">
       <input
@@ -243,6 +249,48 @@
       </button>
     </div>
   </form>
+</p-dialog>
+
+<!-- DIALOG SEARCH FOR MOBILE -->
+<p-dialog
+  header=""
+  [(visible)]="displaySearch"
+  [style]="{ width: '50vw', minHeight: '10rem' }"
+  [baseZIndex]="10000"
+  [modal]="true"
+  [draggable]="false"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+>
+  <ng-template pTemplate="header">
+    <h2>Tìm kiếm</h2>
+  </ng-template>
+  <div>
+    <form ngClass="__search__dialog--mobile form-inline end-0" [formGroup]="searchKeyword">
+      <input
+        ngClass="__search__input--mobile  mr-sm-2"
+        type="search"
+        placeholder="Tìm kiếm"
+        aria-label="Search"
+        formControlName="keyword"
+      />
+      <button
+        ngClass="btn btn-outline-success my-2 my-sm-0 ml-1"
+        type="submit"
+        (click)="handleSearch()"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </form>
+  </div>
+  <div ngClass="__content--left">
+    <button
+      type="button"
+      ngClass="btn btn-danger ml-3"
+      (click)="closeSearchDialog()"
+    >
+      Thoát
+    </button>
+  </div>
 </p-dialog>
 
 <!-- DIALOG MESSAGE ACTION -->
