@@ -46,26 +46,39 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th style="min-width: 200px">STT</th>
+        <th style="min-width: 50px; max-width: 100px">STT</th>
         <th style="min-width: 200px">Mã</th>
         <th style="min-width: 200px">Loại văn bản</th>
-        <th style="min-width: 100px">Trạng thái</th>
-        <th style="min-width: 50px"></th>
+        <th
+          style="min-width: 50px; max-width: 200px"
+          class="d-flex justify-content-center"
+        >
+          Trạng thái
+        </th>
+        <th style="min-width: 50px; max-width: 200px"></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
-        <td style="min-width: 200px">{{ products.indexOf(product) + 1 }}</td>
+        <td style="min-width: 50px; max-width: 100px">
+          {{ products.indexOf(product) + 1 }}
+        </td>
         <td style="min-width: 200px">{{ product.code }}</td>
         <td style="min-width: 200px">{{ product.title }}</td>
-        <td style="min-width: 100px">
+        <td
+          style="min-width: 70px; max-width: 200px"
+          class="d-flex justify-content-center"
+        >
           <i
             *ngIf="product.active"
             ngClass="fa-solid fa-toggle-on text-success"
           ></i>
           <i *ngIf="!product.active" ngClass="fa-solid fa-toggle-off"></i>
         </td>
-        <td style="min-width: 50px">
+        <td
+          style="min-width: 50px; max-width: 200px"
+          ngClass="d-flex justify-content-center"
+        >
           <button
             type="button"
             ngClass="btn bg-transparent mr-2"
