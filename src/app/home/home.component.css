@@ -5,7 +5,26 @@
     border-radius: 10px;
     padding: 0.5rem 2rem;
 }
-.__content--left{
-    display: flex;
-    justify-content: flex-end;
+
+.__control__bar-pc{
+    display: block;
 }
+.__control__bar-mobile{
+    display: none;
+}
+
+
+@media only screen and (max-width:576px){
+    
+    
+    .__control__bar-mobile{        
+        display: block;
+    }
+    .__control__bar-pc{
+        display: none;
+    }
+    .__control__bar-mobile-btn{
+        margin-top: 8px;
+    }
+}
+

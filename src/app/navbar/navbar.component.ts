@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
     localStorage.clear();
     this.userInfo = null;
     if (this.userInfo == null) {
-      this.router.navigate(['']);
+      this.router.navigate(['/login']);
     }
   }
 }

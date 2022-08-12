@@ -18,6 +18,9 @@ import { DialogModule } from 'primeng/dialog';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from "primeng/button";
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+
 
 
 const routes: Routes = [
@@ -35,6 +38,7 @@ const routes: Routes = [
     HeaderComponent,
   ],
   imports: [ButtonModule,
+    ToastModule,
     DialogModule,
     TableModule,
     BrowserModule,
@@ -47,7 +51,7 @@ const routes: Routes = [
     StoreModule.forRoot(UserReducer),
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

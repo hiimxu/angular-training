@@ -18,7 +18,7 @@
           routerLink=""
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
-          >Home <span class="sr-only">(current)</span></a
+          >Trang chủ <span class="sr-only">(current)</span></a
         >
       </li>
     </ul>
@@ -31,7 +31,7 @@
         *ngIf="userInfo"
         (click)="logout()"
       >
-        Sign out
+        Đăng xuất
       </button>
       <div *ngIf="!userInfo">
         <button
@@ -40,9 +40,9 @@
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
         >
-          Sign in
+          Đăng nhập
         </button>
-        <button class="btn bg-dark text-white my-2 my-sm-0">Sign up</button>
+        <button class="btn bg-dark text-white my-2 my-sm-0">Đăng ký</button>
       </div>
     </form>
   </div>
