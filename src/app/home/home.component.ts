@@ -4,6 +4,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -18,12 +19,14 @@ export class HomeComponent implements OnInit {
   userStr: any;
 
   products: any[] = [];
+  page: any = {};
 
   constructor(
     private http: HttpClient,
     private primengConfig: PrimeNGConfig,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   //Request for get method
@@ -38,6 +41,7 @@ export class HomeComponent implements OnInit {
   };
 
   paginate(event: any) {
+    this.page = {};
     const pageIndex = event.first / event.rows + 1;
     const pageSize = event.rows;
     this.search = {
@@ -45,8 +49,9 @@ export class HomeComponent implements OnInit {
       pageNumber: pageIndex,
       pageSize: pageSize,
     };
-    console.log(this.search);
+
     this.getData(this.search);
+    event.pageCount = this.page.pagesCount;
   }
   searchData() {
     this.searchKeyword = this.formBuilder.group({
@@ -61,7 +66,7 @@ export class HomeComponent implements OnInit {
       ...this.search,
       keyword: this.searchKeyword.get('keyword')?.value,
     };
-    console.log(this.search);
+
     this.getData(this.search);
   }
 
@@ -79,7 +84,7 @@ export class HomeComponent implements OnInit {
   }
 
   //call api data table
-  getData(data: any) {
+   getData(data: any) {
     const reqH = new HttpHeaders({
       authorization: 'bearer ' + this.userObj.access_token,
     });
@@ -96,9 +101,14 @@ export class HomeComponent implements OnInit {
         { headers: reqH }
       )
       .subscribe((response: any) => {
+        this.page = {
+          ...this.page,
+          pagesCount: response.pagesCount,
+          pageSize: response.pageSize,
+        };
+        // console.log(this.pagesCount);
         this.products = [...response.data];
         this.closeSearchDialog();
-        console.log(this.products);
       });
   }
 
@@ -226,10 +236,6 @@ export class HomeComponent implements OnInit {
   }
 
   async selectEditItem(product: any) {
-    console.log(product);
-
-    this.editItemSelected = product;
-
     const reqH = new HttpHeaders({
       authorization: 'bearer ' + this.userObj.access_token,
     });
@@ -240,7 +246,7 @@ export class HomeComponent implements OnInit {
         { headers: reqH }
       )
       .subscribe((response: any) => (this.editItemSelected = response.value));
-
+    console.log('prev state:');
     console.log(this.editItemSelected);
 
     this.showEditDialog();
@@ -268,6 +274,9 @@ export class HomeComponent implements OnInit {
           });
           setTimeout(() => {
             this.closeEditDialog();
+            this.editItemSelected = {};
+            console.log('next state:');
+            console.log(this.editItemSelected);
           }, 1000);
           this.getData(this.search);
         } else {
@@ -349,10 +358,16 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const userData = localStorage.getItem('userInfor');
+    if (!userData) {
+      this.router.navigate(['/login']);
+    }
     this.searchData();
     this.addData();
     this.editData();
     this.userData();
-    this.getData(this.search);
+    if (userData) {
+      this.getData(this.search);
+    }
   }
 }

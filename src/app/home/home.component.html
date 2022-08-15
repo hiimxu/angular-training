@@ -35,14 +35,15 @@
   </div>
 </div>
 
+<!-- TABLE -->
 <div ngClass="center __table__res">
   <p-table
     [value]="products"
-    [paginator]="true"
+    [paginator]="false"
     [rows]="10"
-    [rowsPerPageOptions]="[2,5,10, 50, 100]"
+    [rowsPerPageOptions]="[2, 5, 10, 50, 100]"
     [scrollable]="true"
-    (onPage)="paginate($event)"
+    
   >
     <ng-template pTemplate="header">
       <tr>
@@ -97,7 +98,24 @@
       </tr>
     </ng-template>
   </p-table>
+  <div *ngIf="this.page">
+    <p-paginator
+      [showFirstLastIcon]="false"
+      [rows]="page.pageSize"
+      [totalRecords]="120"
+      [rowsPerPageOptions]="[2, 5, 10]"
+      [pageLinkSize]="this.page.pagesCount"
+      (onPageChange)="paginate($event)"
+      
+    ></p-paginator>
+  </div>
 </div>
+
+<!-- DATA BINDING PARENT TO CHILD -->
+<!-- <div>
+  <p>Example data binding</p>
+  <app-table [products]="products"></app-table>
+</div> -->
 
 <!-- DIALOG -->
 <!-- ADD DIALOG -->
@@ -213,9 +231,13 @@
   <ng-template pTemplate="header">
     <h4>Chỉnh sửa loại văn bản</h4>
   </ng-template>
-  <form [formGroup]="formEdit" *ngIf="editItemSelected">
+  <form [formGroup]="formEdit">
     <div ngClass="form-group">
+      <label for="exampleInputEmail2" ngClass="font-weight-bold"
+        >Mã loại <span ngClass="text-danger">*</span>
+      </label>
       <input
+        *ngIf="editItemSelected"
         type="text"
         ngClass="form-control"
         formControlName="codeEdit"
@@ -224,7 +246,11 @@
     </div>
 
     <div class="form-group">
+      <label for="exampleInputEmail2" ngClass="font-weight-bold"
+        >Tên loại <span ngClass="text-danger">*</span>
+      </label>
       <input
+        *ngIf="editItemSelected"
         type="text"
         ngClass="form-control"
         formControlName="titleEdit"
@@ -234,6 +260,7 @@
     <label for="exampleCheck1" ngClass="font-weight-bold">Trạng thái</label>
     <div ngClass="form-check">
       <input
+        *ngIf="editItemSelected"
         [ngModel]="editItemSelected.active"
         type="checkbox"
         ngClass="form-check-input"

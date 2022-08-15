@@ -1,0 +1,54 @@
+<p-table
+  [value]="products"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[2, 5, 10, 50, 100]"
+  [scrollable]="true"
+  
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="min-width: 50px; max-width: 100px">STT</th>
+      <th style="min-width: 200px">Mã</th>
+      <th style="min-width: 200px">Loại văn bản</th>
+      <th
+        style="min-width: 50px; max-width: 200px"
+        class="d-flex justify-content-center"
+      >
+        Trạng thái
+      </th>
+      <th style="min-width: 50px; max-width: 200px"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td style="min-width: 50px; max-width: 100px">
+        {{ products.indexOf(product) + 1 }}
+      </td>
+      <td style="min-width: 200px">{{ product.code }}</td>
+      <td style="min-width: 200px">{{ product.title }}</td>
+      <td
+        style="min-width: 70px; max-width: 200px"
+        class="d-flex justify-content-center"
+      >
+        <i
+          *ngIf="product.active"
+          ngClass="fa-solid fa-toggle-on text-success"
+        ></i>
+        <i *ngIf="!product.active" ngClass="fa-solid fa-toggle-off"></i>
+      </td>
+      <td
+        style="min-width: 50px; max-width: 200px"
+        ngClass="d-flex justify-content-center"
+      >
+        <button type="button" ngClass="btn bg-transparent mr-2">
+          <i class="fa-solid fa-pen text-info"></i>
+        </button>
+        <button type="button" ngClass="btn bg-transparent">
+          <i class="fa-solid fa-trash-can text-danger"></i>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
