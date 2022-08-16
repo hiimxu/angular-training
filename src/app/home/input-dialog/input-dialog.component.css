@@ -1,0 +1,10 @@
+.__normal-input {
+  border: 1px solid black;
+}
+.__error-input {
+  border: 1px solid red;
+}
+.__content--left {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -41,9 +41,8 @@
     [value]="products"
     [paginator]="false"
     [rows]="10"
-    [rowsPerPageOptions]="[2, 5, 10, 50, 100]"
+    [rowsPerPageOptions]="[2, 5, 10]"
     [scrollable]="true"
-    
   >
     <ng-template pTemplate="header">
       <tr>
@@ -106,7 +105,6 @@
       [rowsPerPageOptions]="[2, 5, 10]"
       [pageLinkSize]="this.page.pagesCount"
       (onPageChange)="paginate($event)"
-      
     ></p-paginator>
   </div>
 </div>
@@ -117,71 +115,22 @@
   <app-table [products]="products"></app-table>
 </div> -->
 
-<!-- DIALOG -->
-<!-- ADD DIALOG -->
-<p-dialog
-  header="Thêm mới loại văn bản"
-  [(visible)]="displayAdd"
-  [style]="{ width: '50vw', minHeight: '10rem' }"
-  [baseZIndex]="10000"
-  [modal]="true"
-  [draggable]="false"
-  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
->
-  <ng-template pTemplate="header">
-    <h4>Thêm mới loại văn bản</h4>
-  </ng-template>
-  <form [formGroup]="formAdd">
-    <div ngClass="form-group">
-      <label for="exampleInputEmail1" ngClass="font-weight-bold"
-        >Mã loại <span ngClass="text-danger">*</span></label
-      >
-      <input
-        type="text"
-        ngClass="form-control"
-        id="exampleInputEmail1"
-        aria-describedby="emailHelp"
-        placeholder="Mã loại"
-        formControlName="code"
-      />
-    </div>
-    <div ngClass="form-group">
-      <label for="exampleInputEmail2" ngClass="font-weight-bold"
-        >Tên loại <span ngClass="text-danger">*</span>
-      </label>
-      <input
-        type="text"
-        ngClass="form-control"
-        id="exampleInputEmail2"
-        aria-describedby="emailHelp"
-        placeholder="Tên loại"
-        formControlName="title"
-      />
-    </div>
-    <label for="exampleCheck1" ngClass="font-weight-bold">Trạng thái</label>
-    <div ngClass="form-check">
-      <input
-        type="checkbox"
-        ngClass="form-check-input"
-        id="exampleCheck1"
-        formControlName="active"
-      />
-      <label ngClass="form-check-label" for="exampleCheck1">Kích hoạt</label>
-    </div>
-    <div ngClass="__content--left">
-      <button type="button" ngClass="btn btn-primary" (click)="submitAdd()">
-        Đồng ý
-      </button>
-      <button
-        type="button"
-        ngClass="btn btn-danger ml-3"
-        (click)="closeAddDialog()"
-      >
-        Thoát
-      </button>
-    </div>
-  </form>
-</p-dialog>
+<!-- DILOG ADD -->
+<app-input-dialog
+  [displayDialog]="displayAdd"
+  (changeDisplay)="closeAddDialog($event)"
+  (message)="showMessage($event)"
+  (reload)="reloadData($event)"
+></app-input-dialog>
+
+<!-- DIALOG EDIT -->
+<app-input-dialog
+  [displayDialog]="displayEdit"
+  [product]="editItemSelected"
+  (changeDisplay)="closeEditDialog($event)"
+  (message)="showMessage($event)"
+  (reload)="reloadData($event)"
+></app-input-dialog>
 
 <!-- DELETE DIALOG -->
 <p-dialog
@@ -211,72 +160,6 @@
         type="button"
         ngClass="btn btn-danger ml-3"
         (click)="closeDeleteDialog()"
-      >
-        Thoát
-      </button>
-    </div>
-  </form>
-</p-dialog>
-
-<!-- EDIT PRODUCT DIALOG -->
-<p-dialog
-  header="Chỉnh sửa loại văn bản"
-  [(visible)]="displayEdit"
-  [style]="{ width: '50vw', minHeight: '10rem' }"
-  [baseZIndex]="10000"
-  [modal]="true"
-  [draggable]="false"
-  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
->
-  <ng-template pTemplate="header">
-    <h4>Chỉnh sửa loại văn bản</h4>
-  </ng-template>
-  <form [formGroup]="formEdit">
-    <div ngClass="form-group">
-      <label for="exampleInputEmail2" ngClass="font-weight-bold"
-        >Mã loại <span ngClass="text-danger">*</span>
-      </label>
-      <input
-        *ngIf="editItemSelected"
-        type="text"
-        ngClass="form-control"
-        formControlName="codeEdit"
-        [ngModel]="editItemSelected.code"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="exampleInputEmail2" ngClass="font-weight-bold"
-        >Tên loại <span ngClass="text-danger">*</span>
-      </label>
-      <input
-        *ngIf="editItemSelected"
-        type="text"
-        ngClass="form-control"
-        formControlName="titleEdit"
-        [ngModel]="editItemSelected.title"
-      />
-    </div>
-    <label for="exampleCheck1" ngClass="font-weight-bold">Trạng thái</label>
-    <div ngClass="form-check">
-      <input
-        *ngIf="editItemSelected"
-        [ngModel]="editItemSelected.active"
-        type="checkbox"
-        ngClass="form-check-input"
-        id="exampleCheck1"
-        formControlName="activeEdit"
-      />
-      <label ngClass="form-check-label" for="exampleCheck1">Kích hoạt</label>
-    </div>
-    <div ngClass="__content--left">
-      <button type="button" ngClass="btn btn-primary" (click)="submitEdit()">
-        Đồng ý
-      </button>
-      <button
-        type="button"
-        ngClass="btn btn-danger ml-3"
-        (click)="closeEditDialog()"
       >
         Thoát
       </button>

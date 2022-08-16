@@ -20,6 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TableComponent } from './table/table.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { InputDialogComponent } from './home/input-dialog/input-dialog.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
     NavbarComponent,
     HeaderComponent,
     TableComponent,
+    InputDialogComponent,
   ],
   imports: [
     ButtonModule,

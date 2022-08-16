@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
   }
 
   //call api data table
-   getData(data: any) {
+  getData(data: any) {
     const reqH = new HttpHeaders({
       authorization: 'bearer ' + this.userObj.access_token,
     });
@@ -109,68 +109,6 @@ export class HomeComponent implements OnInit {
         // console.log(this.pagesCount);
         this.products = [...response.data];
         this.closeSearchDialog();
-      });
-  }
-
-  //taget value addForm
-  formAdd!: FormGroup;
-  addData() {
-    this.formAdd = this.formBuilder.group({
-      code: '',
-      title: '',
-      active: true,
-    });
-    return this.formAdd;
-  }
-  submitAdd() {
-    let userData = this.userData();
-    let submitObj: any = {
-      code: this.formAdd.get('code')?.value,
-      title: this.formAdd.get('title')?.value,
-      active: this.formAdd.get('active')?.value,
-      createdBy: '' + userData.userId,
-      createdOn: this.today,
-      editedBy: '' + userData.userId,
-      editedOn: this.today,
-      departmentId: '' + userData.departmentId,
-      deleted: 0,
-    };
-    console.log(submitObj);
-    this.addProduct(submitObj);
-  }
-  //call api add product
-  addProduct(data: any) {
-    const reqH = new HttpHeaders({
-      authorization: 'bearer ' + this.userObj.access_token,
-    });
-    this.http
-      .post(
-        'https://api-dev-voffice.v-soft.vn/api/DocumentType/Add',
-
-        data,
-        { headers: reqH }
-      )
-      .subscribe((response: any) => {
-        if (response.value) {
-          console.log('add success');
-          this.showMessage({
-            severity: 'success',
-            summary: 'Thành công',
-            detail: 'Thêm thành công',
-          });
-          setTimeout(() => {
-            this.closeAddDialog();
-          }, 1000);
-          this.formAdd.reset();
-          this.getData(this.search);
-        } else {
-          console.log('add failed');
-          this.showMessage({
-            severity: 'error',
-            summary: 'Có lỗi xảy ra',
-            detail: response?.message,
-          });
-        }
       });
   }
 
@@ -224,21 +162,13 @@ export class HomeComponent implements OnInit {
 
   //edit product
   editItemSelected: any = {};
-
-  formEdit!: FormGroup;
-
-  editData() {
-    this.formEdit = this.formBuilder.group({
-      codeEdit: '',
-      titleEdit: '',
-      activeEdit: true,
-    });
-  }
+  editItem: number = 0;
 
   async selectEditItem(product: any) {
     const reqH = new HttpHeaders({
       authorization: 'bearer ' + this.userObj.access_token,
     });
+    this.editItem = product;
 
     let result = await this.http
       .get(
@@ -252,75 +182,15 @@ export class HomeComponent implements OnInit {
     this.showEditDialog();
   }
 
-  //api edit product
-  editProduct(data: any) {
-    const reqH = new HttpHeaders({
-      authorization: 'bearer ' + this.userObj.access_token,
-    });
-    this.http
-      .put(
-        'https://api-dev-voffice.v-soft.vn/api/DocumentType/Update',
-
-        data,
-        { headers: reqH }
-      )
-      .subscribe((response: any) => {
-        if (response?.value) {
-          console.log('edit success');
-          this.showMessage({
-            severity: 'success',
-            summary: 'Thành công',
-            detail: 'Chỉnh sửa thành công',
-          });
-          setTimeout(() => {
-            this.closeEditDialog();
-            this.editItemSelected = {};
-            console.log('next state:');
-            console.log(this.editItemSelected);
-          }, 1000);
-          this.getData(this.search);
-        } else {
-          console.log('edit failed');
-          this.showMessage({
-            severity: 'error',
-            summary: 'Có lỗi xảy ra',
-            detail: response?.message,
-          });
-        }
-      });
-  }
-
-  submitEdit() {
-    const userData = this.userData();
-    const submitObj: any = {
-      code: this.formEdit.get('codeEdit')?.value,
-      title: this.formEdit.get('titleEdit')?.value,
-      active: this.formEdit.get('activeEdit')?.value,
-      createdBy: '' + userData.userId,
-      createdOn: this.today,
-      editedBy: '' + userData.userId,
-      editedOn: this.today,
-      deleted: 0,
-      documentDelivereds: this.editItemSelected?.documentDelivereds,
-      documentReceiveds: this.editItemSelected?.documentReceiveds,
-      id: this.editItemSelected?.id,
-    };
-    console.log(submitObj);
-    if (submitObj) {
-      this.editProduct(submitObj);
-    } else {
-      return;
-    }
-  }
-
   //control dialog
   //add dialog
   showAddDialog() {
     this.displayAdd = true;
+    console.log(this.displayAdd);
   }
-  closeAddDialog() {
-    this.displayAdd = false;
-    this.formAdd.reset();
+  closeAddDialog($event: boolean) {
+    this.displayAdd = $event;
+    console.log('close add dialog');
   }
 
   //delete dialog
@@ -335,9 +205,9 @@ export class HomeComponent implements OnInit {
   showEditDialog() {
     this.displayEdit = true;
   }
-  closeEditDialog() {
-    this.displayEdit = false;
-    this.formEdit.reset();
+  closeEditDialog($event: boolean) {
+    this.displayEdit = $event;
+    console.log('close edit dialog');
   }
   //mobile search dialog
   showSearchDialog() {
@@ -348,13 +218,19 @@ export class HomeComponent implements OnInit {
   }
 
   //message dialog
-  showMessage(mess: any) {
+  showMessage($event: any) {
     this.messageService.add({
       key: 'tl',
-      severity: mess.severity,
-      summary: mess.summary,
-      detail: mess.detail,
+      severity: $event.severity,
+      summary: $event.summary,
+      detail: $event.detail,
     });
+  }
+
+  reloadData($event: boolean) {
+    if ($event === true) {
+      this.getData(this.search);
+    }
   }
 
   ngOnInit(): void {
@@ -363,8 +239,6 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     this.searchData();
-    this.addData();
-    this.editData();
     this.userData();
     if (userData) {
       this.getData(this.search);
