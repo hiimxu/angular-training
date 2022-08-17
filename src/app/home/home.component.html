@@ -115,11 +115,7 @@
   </div>
 </div>
 
-<!-- DATA BINDING PARENT TO CHILD -->
-<!-- <div>
-  <p>Example data binding</p>
-  <app-table [products]="products"></app-table>
-</div> -->
+
 
 <!-- DILOG ADD -->
 <app-input-dialog
@@ -146,6 +142,7 @@
   [baseZIndex]="10000"
   [modal]="true"
   [draggable]="false"
+  [closable]="false"
   [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
 >
   <ng-template pTemplate="header">

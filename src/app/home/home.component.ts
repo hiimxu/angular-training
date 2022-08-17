@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  @ViewChild(LoginComponent) obj!: LoginComponent;
   today: string = new Date().toISOString();
 
   //control dialog
@@ -31,7 +30,7 @@ export class HomeComponent implements OnInit {
   editItemSelected: any = {};
   editItem: number = 0;
 
-  //Request for get method
+  
   searchKeyword!: FormGroup;
 
   //delete product
@@ -164,16 +163,20 @@ export class HomeComponent implements OnInit {
         { headers: reqH }
       )
       .subscribe((response: any) => {
-        console.log('delete success');
-        this.showMessage({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: 'Xóa thành công',
-        });
-        setTimeout(() => {
-          this.closeDeleteDialog();
-        }, 1000);
-        this.getData(this.search);
+        if (response.isSuccess && response.isValid) {
+          console.log('delete success');
+          this.showMessage({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Xóa thành công',
+          });
+          setTimeout(() => {
+            this.closeDeleteDialog();
+          }, 1000);
+          this.getData(this.search);
+        } else {
+          console.log(response.message);
+        }
       });
   }
 

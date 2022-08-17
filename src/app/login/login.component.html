@@ -1,25 +1,25 @@
 <form ngClass="container p-5" [formGroup]="form" (submit)="login()">
   <div ngClass="form-group">
-    <label for="formGroupExampleInput">User name:</label>
+    <label for="formGroupExampleInput">Tên đăng nhập:</label>
     <input
       type="text"
       ngClass="form-control"
       id="formGroupExampleInput"
-      placeholder="Enter your user name..."
+      placeholder="Tên đăng nhập..."
       formControlName="username"
     />
   </div>
   <div ngClass="form-group">
-    <label for="formGroupExampleInput2">Password:</label>
+    <label for="formGroupExampleInput2">Mật khẩu:</label>
     <input
       type="password"
       ngClass="form-control"
       id="formGroupExampleInput2"
-      placeholder="Enter your password..."
+      placeholder="Mật khẩu..."
       formControlName="password"
     />
   </div>
-  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-primary">Đăng nhập</button>
 </form>
 <p-toast
   position="top-right"
