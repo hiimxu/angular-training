@@ -14,12 +14,39 @@ export class HomeComponent implements OnInit {
   @ViewChild(LoginComponent) obj!: LoginComponent;
   today: string = new Date().toISOString();
 
+  //control dialog
+  displayAdd: boolean = false;
+  displayDelete: boolean = false;
+  displayEdit: boolean = false;
+  displaySearch: boolean = false;
+
   //user data from local storage
   userObj: any;
   userStr: any;
 
   products: any[] = [];
   page: any = {};
+
+  //edit product
+  editItemSelected: any = {};
+  editItem: number = 0;
+
+  //Request for get method
+  searchKeyword!: FormGroup;
+
+  //delete product
+  deleteIdSelected: number = 0;
+
+  search: any = {
+    keyword: '',
+    pageSize: '10',
+    pageNumber: '1',
+  };
+
+  //paginator
+  first: number = 0;
+  last: number = 0;
+  rowIndex: number = 1;
 
   constructor(
     private http: HttpClient,
@@ -28,17 +55,6 @@ export class HomeComponent implements OnInit {
     private messageService: MessageService,
     private router: Router
   ) {}
-
-  //Request for get method
-  searchKeyword!: FormGroup;
-
-  //pagination
-
-  search: any = {
-    keyword: '',
-    pageSize: '10',
-    pageNumber: '1',
-  };
 
   paginate(event: any) {
     this.page = {};
@@ -70,12 +86,6 @@ export class HomeComponent implements OnInit {
     this.getData(this.search);
   }
 
-  //control dialog
-  displayAdd: boolean = false;
-  displayDelete: boolean = false;
-  displayEdit: boolean = false;
-  displaySearch: boolean = false;
-
   //convert user data to object
   userData() {
     this.userStr = localStorage.getItem('userInfor');
@@ -105,16 +115,23 @@ export class HomeComponent implements OnInit {
           ...this.page,
           pagesCount: response.pagesCount,
           pageSize: response.pageSize,
+          pageNumber: response.pageNumber,
+          totalItems: response.totalItems,
         };
+        this.first = response.pageSize * (response.pageNumber - 1);
+        this.last = this.first + response.pageSize;
+        if (this.last <= response.totalItems) {
+          this.last = this.first + response.pageSize;
+        } else {
+          this.last = response.totalItems;
+        }
+        console.log(this.page);
+
         // console.log(this.pagesCount);
         this.products = [...response.data];
         this.closeSearchDialog();
       });
   }
-
-  //delete product
-
-  deleteIdSelected: number = 0;
 
   deleteItemSelected(productId: number) {
     this.deleteIdSelected = productId;
@@ -160,10 +177,6 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  //edit product
-  editItemSelected: any = {};
-  editItem: number = 0;
-
   async selectEditItem(product: any) {
     const reqH = new HttpHeaders({
       authorization: 'bearer ' + this.userObj.access_token,
@@ -182,7 +195,7 @@ export class HomeComponent implements OnInit {
     this.showEditDialog();
   }
 
-  //control dialog
+  //CONTROLS DIALOG
   //add dialog
   showAddDialog() {
     this.displayAdd = true;

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -10,6 +18,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class InputDialogComponent implements OnInit {
   //date
   today: string = new Date().toISOString();
+
+  //Target element
+  @ViewChild('codeInput') codeInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
 
   //data input
   @Input() product: any = {};
@@ -30,6 +42,7 @@ export class InputDialogComponent implements OnInit {
   //error mess
   responseCodeErr: any = {};
   responseTitleErr: any = {};
+  responseCodeIsValid: string = '';
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
@@ -119,6 +132,7 @@ export class InputDialogComponent implements OnInit {
           console.log('add success');
           this.responseCodeErr = {};
           this.responseTitleErr = {};
+          this.responseCodeIsValid = '';
           this.message.emit({
             severity: 'success',
             summary: 'Thành công',
@@ -127,27 +141,32 @@ export class InputDialogComponent implements OnInit {
           setTimeout(() => {
             this.closeDialog();
             this.reload.emit(true);
+            this.formAdd.reset();
           }, 1000);
-          this.formAdd.reset();
         }
         if (!response.isSuccess && !response.isValid) {
           if (response.brokenRules.length) {
             if (response.brokenRules.length === 1) {
               if (response.brokenRules[0].propertyName === 'Code') {
                 this.responseCodeErr = response.brokenRules[0];
+                this.codeInput.nativeElement.focus();
               }
               if (response.brokenRules[0].propertyName === 'Title') {
                 this.responseTitleErr = response.brokenRules[0];
+                this.titleInput.nativeElement.focus();
               }
             } else {
               this.responseCodeErr = response.brokenRules[0];
               this.responseTitleErr = response.brokenRules[1];
+              this.codeInput.nativeElement.focus();
             }
           }
           console.log(this.responseCodeErr);
           console.log(this.responseTitleErr);
         } else if (!response.isSuccess) {
           console.log('add failed');
+          this.responseCodeIsValid = response.message;
+          this.codeInput.nativeElement.focus();
           this.message.emit({
             severity: 'error',
             summary: 'Có lỗi xảy ra',
@@ -174,6 +193,7 @@ export class InputDialogComponent implements OnInit {
           console.log('edit success');
           this.responseCodeErr = {};
           this.responseTitleErr = {};
+          this.responseCodeIsValid = '';
           this.message.emit({
             severity: 'success',
             summary: 'Thành công',
@@ -182,24 +202,24 @@ export class InputDialogComponent implements OnInit {
           setTimeout(() => {
             this.closeDialog();
             this.reload.emit(true);
+            this.formAdd.reset();
           }, 1000);
-          this.formAdd.reset();
         }
         if (!response.isSuccess && !response.isValid) {
           if (response.brokenRules.length) {
             if (response.brokenRules.length === 1) {
               if (response.brokenRules[0] === 'code') {
                 this.responseCodeErr = response.brokenRules[0];
-                console.log(2);
+                this.codeInput.nativeElement.focus();
               }
               if (response.brokenRules[0] === 'title') {
                 this.responseTitleErr = response.brokenRules[0];
-                console.log(3);
+                this.titleInput.nativeElement.focus();
               }
             } else {
               this.responseCodeErr = response.brokenRules[0];
               this.responseTitleErr = response.brokenRules[1];
-              console.log(1);
+              this.codeInput.nativeElement.focus();
             }
           }
           this.message.emit({
@@ -211,6 +231,8 @@ export class InputDialogComponent implements OnInit {
           console.log(this.responseTitleErr);
         } else if (!response.isSuccess) {
           console.log('add failed');
+          this.responseCodeIsValid = response.message;
+          this.codeInput.nativeElement.focus();
           this.message.emit({
             severity: 'error',
             summary: 'Có lỗi xảy ra',

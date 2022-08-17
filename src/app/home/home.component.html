@@ -40,9 +40,10 @@
   <p-table
     [value]="products"
     [paginator]="false"
-    [rows]="10"
-    [rowsPerPageOptions]="[2, 5, 10]"
+    [rows]="this.search.pageSize"
     [scrollable]="true"
+    [showCurrentPageReport]="true"
+    (onPage)="paginate($event)"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -58,10 +59,10 @@
         <th style="min-width: 50px; max-width: 200px"></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
       <tr>
         <td style="min-width: 50px; max-width: 100px">
-          {{ products.indexOf(product) + 1 }}
+          {{ first + rowIndex + 1 }}
         </td>
         <td style="min-width: 200px">{{ product.code }}</td>
         <td style="min-width: 200px">{{ product.title }}</td>
@@ -99,11 +100,16 @@
   </p-table>
   <div *ngIf="this.page">
     <p-paginator
-      [showFirstLastIcon]="false"
+      [showFirstLastIcon]="true"
       [rows]="page.pageSize"
       [totalRecords]="120"
       [rowsPerPageOptions]="[2, 5, 10]"
       [pageLinkSize]="this.page.pagesCount"
+      [showCurrentPageReport]="true"
+      [totalRecords]="page.pagesCount*page.pageSize"
+      currentPageReportTemplate="Hiển thị bản ghi từ {first} đến {{last}} trên tổng số {{
+        page.totalItems
+      }}"
       (onPageChange)="paginate($event)"
     ></p-paginator>
   </div>

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,10 +18,14 @@ export class LoginComponent implements OnInit {
   });
   submitForm: any = {};
 
+  //login error
+  error: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -43,18 +47,33 @@ export class LoginComponent implements OnInit {
       .post('https://api-dev-voffice.v-soft.vn/token', this.submitForm, {
         headers: reqH,
       })
-      .subscribe((userInfor) => {
-        localStorage.setItem('userInfor', JSON.stringify(userInfor));
-
-        this.userStr = localStorage.getItem('userInfor');
-        this.userObj = JSON.parse(this.userStr);
-        console.log(typeof this.userObj);
-
-        console.log('login success');
-
-        this.router.navigate(['']).then(() => {
-          window.location.reload();
-        });
-      });
+      .subscribe(
+        (response: any) => {
+          // if (response.status === 200) {
+          localStorage.setItem('userInfor', JSON.stringify(response));
+          this.userStr = localStorage.getItem('userInfor');
+          this.userObj = JSON.parse(this.userStr);
+          console.log(typeof this.userObj);
+          console.log('login success');
+          this.router.navigate(['']).then(() => {
+            window.location.reload();
+          });
+        },
+        (err: any) => {
+          this.showMessage({
+            severity: 'error',
+            summary: 'Đăng nhập thất bại',
+            detail: err.error.error_description,
+          });
+        }
+      );
+  }
+  showMessage($event: any) {
+    this.messageService.add({
+      key: 'tl',
+      severity: $event.severity,
+      summary: $event.summary,
+      detail: $event.detail,
+    });
   }
 }
